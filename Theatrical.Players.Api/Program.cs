@@ -1,4 +1,6 @@
 using System.Reflection;
+using TheatricalPlayersRefactoringKata.Interfaces.Services.StatementPrinter;
+using TheatricalPlayersRefactoringKata.Services.StatementPrinter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,7 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 }
-
+builder.Services.AddScoped<IStatementPrinterService, StatementPrinterService>();
 var app = builder.Build();
 
 

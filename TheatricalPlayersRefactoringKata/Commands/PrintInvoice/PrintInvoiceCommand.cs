@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TheatricalPlayersRefactoringKata.Commands.PrintInvoice
 {
-    public class PrintInvoiceCommand : IRequest<PrintInvoiceCommandResponse>
+    public class PrintInvoiceCommand : IRequest<string>
     {
     }
 }
