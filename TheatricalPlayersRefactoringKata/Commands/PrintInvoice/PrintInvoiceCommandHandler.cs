@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,16 +8,21 @@ using TheatricalPlayersRefactoringKata.Models;
 
 namespace TheatricalPlayersRefactoringKata.Commands.PrintInvoice
 {
-    public class PrintInvoiceCommandHandler : IRequestHandler<PrintInvoiceCommand, string>
+    public class PrintInvoiceCommandHandler : IRequestHandler<PrintInvoiceCommand, PrintInvoiceCommandResponse>
     {
+        private readonly IMapper _mapper;
         private readonly IStatementPrinterService _statementPrinterService;
 
         public PrintInvoiceCommandHandler(
-            IStatementPrinterService statementPrinterService 
-        ) =>
+            IMapper mapper,
+            IStatementPrinterService statementPrinterService
+        )
+        {
+            _mapper = mapper;
             _statementPrinterService = statementPrinterService;
+        }
         
-        public async Task<string> Handle(PrintInvoiceCommand request, CancellationToken cancellationToken)
+        public async Task<PrintInvoiceCommandResponse> Handle(PrintInvoiceCommand request, CancellationToken cancellationToken)
         {
 
             var plays = new Dictionary<string, Play>();
@@ -36,12 +42,13 @@ namespace TheatricalPlayersRefactoringKata.Commands.PrintInvoice
                 new Performance("othello", 40),
                 new Performance("henry-v", 20),
                 new Performance("john", 39),
-                new Performance("henry-v", 20)
+                new Performance("richard-iii", 20)
                 }
             );
 
-            return await Task.FromResult(_statementPrinterService.Print(invoice , plays));
-            
+            var serviceResponse = _statementPrinterService.Print(invoice, plays);
+
+            return await Task.FromResult(_mapper.Map<PrintInvoiceCommandResponse>(serviceResponse));            
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿Number of lines:
+Play: Hamlet
+Lines: 4000
+Play: As You Like It
+Lines: 1200
+Play: Othello
+Lines: 4000
+Play: Henry V
+Lines: 2000
+Play: King John
+Lines: 2648
+Play: Richard III
+Lines: 1000

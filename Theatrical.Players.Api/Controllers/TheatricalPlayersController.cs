@@ -17,7 +17,7 @@ namespace Theatrical.Players.Api.Controllers
         
 
         [HttpPost("create")]
-        public async Task<string> Post() 
+        public async Task<PrintInvoiceCommandResponse> Post() 
         {
             return await _mediator.Send(new PrintInvoiceCommand());
         }

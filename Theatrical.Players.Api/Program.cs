@@ -1,5 +1,7 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using TheatricalPlayersRefactoringKata.Interfaces.Services.StatementPrinter;
+using TheatricalPlayersRefactoringKata.MapperProfiles;
 using TheatricalPlayersRefactoringKata.Services.StatementPrinter;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,10 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 }
 builder.Services.AddScoped<IStatementPrinterService, StatementPrinterService>();
+builder.Services.AddAutoMapper(typeof(InvoiceResponseProfile));
+builder.Services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
 var app = builder.Build();
 
 
