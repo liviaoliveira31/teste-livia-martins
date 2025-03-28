@@ -4,13 +4,13 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter.Response
 {
     public class ResponseType
     {
-        public ResponseType(string text, XDocument xmlText)
+        public ResponseType(string statement, XDocument xmlStatement)
         {
-            Text = text;
-            XmlText = xmlText;
+            Statement = statement;
+            XmlStatement = xmlStatement;
         }
 
-        public string Text { get; set; }
-        public XDocument XmlText { get; set; }
+        public string Statement { get; set; }
+        public XDocument XmlStatement { get; set; }
     }
 }

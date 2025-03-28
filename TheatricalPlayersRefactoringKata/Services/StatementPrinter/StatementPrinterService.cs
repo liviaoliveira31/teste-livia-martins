@@ -59,18 +59,11 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter
 
             result += String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount/100));
             result += String.Format("You earned {0} credits\n", volumeCredits);
-            
-            statement.Add(items);
-            statement.Add(new XElement("AmountOwed", Convert.ToDecimal(totalAmount / 100)));
-            statement.Add(new XElement("EarnedCredits", volumeCredits));
-            var xml = new XDocument(statement);
-            xml.Save("C:/Dev/teste-livia-martins/TheatricalPlayersRefactoringKata/Services/StatementPrinter/Response/XML/result.xml");
 
-            var response = new ResponseType(result, xml);
+            var xml = SaveXmlStatement(statement, items, totalAmount, volumeCredits);
 
-            return response;
+            return new ResponseType(result, xml);
         }
-
 
         private XElement GetXmlHeader(string customer)
         {
@@ -95,7 +88,7 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter
             return playLines;
         }
 
-        private int GetAmountByPlayTypeTragedy(int performanceAudience, int baseValue)
+        public int GetAmountByPlayTypeTragedy(int performanceAudience, int baseValue)
         {
             if (performanceAudience <= 30)
             {
@@ -110,7 +103,7 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter
             return baseValue;
         }
 
-        private int GetAmountByPlayTypeComedy(int performanceAudience, int baseValue)
+        public int GetAmountByPlayTypeComedy(int performanceAudience, int baseValue)
         {
             if (performanceAudience > 20)
                 return baseValue += 10000 + 500 * (performanceAudience - 20); 
@@ -118,7 +111,7 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter
             return baseValue += 300 * performanceAudience; 
         }
 
-        private int GetAmountByPlayTypeHistory(int performanceAudience, int baseValue)
+        public int GetAmountByPlayTypeHistory(int performanceAudience, int baseValue)
         {
             var baseValueTragedy = GetAmountByPlayTypeTragedy(performanceAudience, baseValue);
             var baseValueComedy = GetAmountByPlayTypeComedy(performanceAudience, baseValue);
@@ -126,7 +119,7 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter
             return baseValueTragedy + baseValueComedy;
         }
 
-        private int AddVolumeCredits(
+        public int AddVolumeCredits(
             string playType, 
             int performanceAudience, 
             int volumeCredits 
@@ -155,6 +148,17 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter
             new XElement("AmountOwed", baseValue / 100),
             new XElement("EarnedCredits", volumeCredits),
             new XElement("Seats", audience)));
+        }
+
+        private XDocument SaveXmlStatement(XElement statement, XElement items, int totalAmount, int volumeCredits)
+        {
+            statement.Add(items);
+            statement.Add(new XElement("AmountOwed", Convert.ToDecimal(totalAmount / 100)));
+            statement.Add(new XElement("EarnedCredits", volumeCredits));
+            var xml = new XDocument(statement);
+            xml.Save("C:/Dev/teste-livia-martins/TheatricalPlayersRefactoringKata/Services/StatementPrinter/Response/XML/result.xml");
+
+            return xml;
         }
     }
 }

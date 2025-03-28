@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Enums\PlayType\" />
     <Folder Include="Services\StatementPrinter\Response\XML\" />
   </ItemGroup>
 

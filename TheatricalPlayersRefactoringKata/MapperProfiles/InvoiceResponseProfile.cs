@@ -9,8 +9,8 @@ namespace TheatricalPlayersRefactoringKata.MapperProfiles
         public InvoiceResponseProfile()
         {
             CreateMap<ResponseType, PrintInvoiceCommandResponse>(MemberList.None)
-            .ForMember(dest => dest.Text, map => map.MapFrom(src => src.Text))
-            .ForMember(dest => dest.XmlText, map => map.MapFrom(src => src.XmlText));
+            .ForMember(dest => dest.Statement, map => map.MapFrom(src => src.Statement))
+            .ForMember(dest => dest.XmlStatement, map => map.MapFrom(src => src.XmlStatement));
         }
     }
 }

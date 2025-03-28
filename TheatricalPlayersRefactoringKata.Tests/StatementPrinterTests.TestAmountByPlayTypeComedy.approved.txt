@@ -1,0 +1,4 @@
+﻿amount: 610
+amount: 316
+amount: 570
+amount: 238
