@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Xml.Linq;
 using TheatricalPlayersRefactoringKata.Interfaces.Services.StatementPrinter;
 using TheatricalPlayersRefactoringKata.Models;
@@ -60,7 +61,8 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter
             result += String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount/100));
             result += String.Format("You earned {0} credits\n", volumeCredits);
 
-            var xml = SaveXmlStatement(statement, items, totalAmount, volumeCredits);
+            var xml = SaveXmlStatement(result, statement, items, totalAmount, volumeCredits);
+            SaveTextStatement(result);
 
             return new ResponseType(result, xml);
         }
@@ -150,15 +152,22 @@ namespace TheatricalPlayersRefactoringKata.Services.StatementPrinter
             new XElement("Seats", audience)));
         }
 
-        private XDocument SaveXmlStatement(XElement statement, XElement items, int totalAmount, int volumeCredits)
+        private XDocument SaveXmlStatement(string result, XElement statement, XElement items, int totalAmount, int volumeCredits)
         {
             statement.Add(items);
             statement.Add(new XElement("AmountOwed", Convert.ToDecimal(totalAmount / 100)));
             statement.Add(new XElement("EarnedCredits", volumeCredits));
             var xml = new XDocument(statement);
             xml.Save("C:/Dev/teste-livia-martins/TheatricalPlayersRefactoringKata/Services/StatementPrinter/Response/XML/result.xml");
-
+            
             return xml;
+        }
+
+        private void SaveTextStatement(string result)
+        {
+            StreamWriter streamWriter = new StreamWriter("C:/Dev/teste-livia-martins/TheatricalPlayersRefactoringKata/Services/StatementPrinter/Response/Text/result.txt");
+            streamWriter.Write(result);
+            streamWriter.Close();
         }
     }
 }
